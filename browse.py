@@ -11,13 +11,13 @@ def blog():
 	BLOG.pack(side='top')
 
 	BLOG_NAME = Label(main_frame, text='Blog name: ')
-	BLOG_NAME.pack(side='left')
+	BLOG_NAME.pack(side='left', anchor=NW)
 
 	BLOG_DESC = Label(main_frame, text='Blog description: ')
-	BLOG_DESC.pack(side='left')
+	BLOG_DESC.pack(side='left', anchor=W)
 
 	BLOG_CONT = Label(main_frame, text='Blog content: ')
-	BLOG_CONT.pack(side='left') 
+	BLOG_CONT.pack(side='left', anchor=SW) 
 
 def brew():
 	browse = Tk()
