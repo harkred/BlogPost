@@ -1,16 +1,24 @@
 from tkinter import *
+from home import home
 
-browse = Tk()
-browse.geometry("1100x700")
+def blog():
+	for child in main_frame.winfo_children():
+		child.pack_forget()
+	 
 
-#Frames
-sidebar_frame = Frame(browse)
-sidebar_frame.pack(fill=Y, expand=1, side='left', anchor=W)
+def brew():
+	browse = Tk()
+	browse.geometry("1100x700")
 
-Button(sidebar_frame, text='Add Blog').pack(anchor=NW)
-Button(sidebar_frame, text='Log out').pack(anchor=W)
+	#Frames
+	sidebar_frame = Frame(browse)
+	sidebar_frame.pack(fill=Y, expand=1, side='left', anchor=W)
 
-main_frame = Frame(browse)
-main_frame.pack(fill=BOTH, expand=1, side='right', anchor=E)
+	Button(sidebar_frame, text='Add Blog', command=blog).pack(anchor=NW)
+	Button(sidebar_frame, text='Log out', command=home).pack(anchor=W)
 
-mainloop()
+	global main_frame
+	main_frame = Frame(browse)
+	main_frame.pack(fill=BOTH, expand=1, side='right', anchor=E)
+
+	mainloop()
