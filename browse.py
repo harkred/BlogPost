@@ -4,11 +4,20 @@ from home import home
 def blog():
 	for child in main_frame.winfo_children():
 		child.pack_forget()
+	
 	add_blog.config(state=DISABLED)
+	
 	BLOG = Label(main_frame, text='Blog')
 	BLOG.pack(side='top')
-	
-		 
+
+	BLOG_NAME = Label(main_frame, text='Blog name: ')
+	BLOG_NAME.pack(side='left')
+
+	BLOG_DESC = Label(main_frame, text='Blog description: ')
+	BLOG_DESC.pack(side='left', anchor=S)
+
+	BLOG_CONT = Label(main_frame, text='Blog content: ')
+	BLOG_CONT.pack(side='left', anchor=S) 
 
 def brew():
 	browse = Tk()
