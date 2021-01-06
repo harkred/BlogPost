@@ -1,6 +1,11 @@
 from tkinter import *
 
-browse = Tk()
-browse.geometry("900x700")
+def brow():
+	browse = Tk()
+	browse.geometry("1100x700")
 
-mainloop()
+	#Frames
+	sidebar_frame = Frame(browse)
+	sidebar_frame.pack(fill=Y, expand=1, side='left')
+
+	mainloop()
