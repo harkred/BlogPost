@@ -1,14 +1,11 @@
 from tkinter import *
 from home import home
 
-browse = ""    # Defining global variable 
-
 def blog():
 	for child in main_frame.winfo_children():
 		child.pack_forget()
 	
 	add_blog.config(state=DISABLED)
-	
 	BLOG = Label(main_frame, text='Blog')
 	BLOG.pack(side='top')
 
@@ -34,7 +31,7 @@ def brew():
 
 	#Frames
 	sidebar_frame = Frame(browse)
-	sidebar_frame.pack(fill=Y, expand=1, side='left', anchor=W)
+	sidebar_frame.pack(fill=Y, side='left', anchor=W)
 
 	add_blog = Button(sidebar_frame, text='Add Blog', command=blog)
 
