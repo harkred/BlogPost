@@ -1,5 +1,6 @@
 from tkinter import *
 from home import home
+from PIL import ImageTk, Image
 
 def discar():
     for child in main_frame.winfo_children():
@@ -7,6 +8,7 @@ def discar():
         child.place_forget()
         
     add_blog.config(state=NORMAL)
+    menu.config(state=NORMAL)
     
 def submit():
     pass
@@ -16,6 +18,7 @@ def blog():
 		child.pack_forget()
 	
 	add_blog.config(state=DISABLED)
+	menu.config(state=DISABLED)
     
 	BLOG = Label(main_frame, text='Blog')
 	BLOG.pack(side='top', pady=25)
@@ -95,8 +98,10 @@ def brew():
 	sidebar_frame = Frame(browse)
 	sidebar_frame.pack(fill=Y, side='left', anchor=W)
     
-	menu = Button(sidebar_frame, text=' ', command=popup)
-	menu.pack(anchor=NW, ipadx=15, ipady=10, padx=5, pady=5)
+	openimg=Image.open('menu_icon.jpg')
+	putimg=ImageTk.PhotoImage(openimg)
+	menu = Button(sidebar_frame, text=' ', command=popup, image=putimg, bg='white')
+	menu.pack(anchor=NW, ipadx=10, ipady=5, padx=5, pady=5)
 
 	main_frame = Frame(browse)
 	main_frame.pack(fill=BOTH, expand=1, side='right', anchor=E)
