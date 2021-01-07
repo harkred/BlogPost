@@ -100,7 +100,7 @@ def brew():
     
 	openimg=Image.open('menu_icon.jpg')
 	putimg=ImageTk.PhotoImage(openimg)
-	menu = Button(sidebar_frame, text=' ', command=popup, image=putimg, bg='white')
+	menu = Button(sidebar_frame, text=' ', command=popup, image=putimg, bg='#f7f7f7')
 	menu.pack(anchor=NW, ipadx=10, ipady=5, padx=5, pady=5)
 
 	main_frame = Frame(browse)
