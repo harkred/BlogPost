@@ -62,12 +62,31 @@ def blog():
 	BLOG_CONT.pack(side='left', anchor=W, pady=5) 
 
 def logout():
-	global browse
 	browse.destroy()
 	home()
 
+def popdown():
+    for child in pop.winfo_children():
+        child.pack_forget()
+    
+    menu.config(command=popup)
+    
+def popup():
+    global pop, add_blog
+    pop = Frame(browse)
+    pop.pack(fill=Y, side='left', anchor=W)
+    
+    add_blog = Button(pop, text='Add Blog', command=blog)
+
+    log_out = Button(pop, text='Log out', command=logout)
+
+    add_blog.pack()
+    log_out.pack()
+    
+    menu.config(command=popdown)
+    
 def brew():
-	global browse, add_blog, main_frame
+	global browse, add_blog, main_frame, sidebar_frame, menu
 
 	browse = Tk()
 	browse.geometry("1100x700")
@@ -75,13 +94,9 @@ def brew():
 	#Frames
 	sidebar_frame = Frame(browse)
 	sidebar_frame.pack(fill=Y, side='left', anchor=W)
-
-	add_blog = Button(sidebar_frame, text='Add Blog', command=blog)
-
-	log_out = Button(sidebar_frame, text='Log out', command=logout)
-
-	add_blog.pack(anchor=NW)
-	log_out.pack(anchor=W)
+    
+	menu = Button(sidebar_frame, text=' ', command=popup)
+	menu.pack(anchor=NW, ipadx=15, ipady=10, padx=5, pady=5)
 
 	main_frame = Frame(browse)
 	main_frame.pack(fill=BOTH, expand=1, side='right', anchor=E)
