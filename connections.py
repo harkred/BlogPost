@@ -25,7 +25,7 @@ def result():
 	db.commit()
 	db.close()
 
-	return result
+	return results
 
 def create_table_blog():
 	db = sqlite3.connect('data.db')
