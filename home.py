@@ -6,7 +6,23 @@ import sqlite3
 
 # Function to check password
 def check_password():
-    pass
+    global Username,Password
+    records = result()
+    for user in records:
+        if user[0] == Username.get():
+            if user[1] != Password.get():
+                Password.delete(0,END)
+                messagebox.showerror(title="Incorrect Password", message="The password entered is incorrect.")
+                break
+            else:
+                # do stuffs
+                Username.delete(0,END)
+                Password.delete(0,END)
+                break
+    else:
+        Username.delete(0,END)
+        Password.delete(0,END)
+        messagebox.showerror(title="Account Not Found", message="Username not found. Please create an account.")
 
 # Function to register
 def register():
