@@ -1,4 +1,8 @@
 from tkinter import *
+import re
+from tkinter import messagebox
+from connections import write_register,result
+import sqlite3
 
 # Function to check password
 def check_password():
@@ -6,10 +10,24 @@ def check_password():
 
 # Function to register
 def register():
-    pass
+    global Email, RUsername, RPassword, CPassword
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    # pass the regular expression and the string in search() method 
+    if not (re.search(regex,Email.get())):
+        Email.delete(0,END)
+        messagebox.showerror(title="Invalid Email",message="The Email Entered is invalid. Please try again.")
+        return
+    if RPassword.get() != CPassword.get():
+        messagebox.showerror(title="Password Error",message="Make sure that confirm password and password are same.")
+        RPassword.delete(0,END)
+        CPassword.delete(0,END)
+        return
+    write_register(RUsername,RPassword,CPassword,Email)
+    
 
 # Login window's function
 def home():
+    global Username, Password, Email, RUsername, RPassword, CPassword
 
     # Creating the window
     root = Tk()
@@ -36,6 +54,7 @@ def home():
 
     Label(root,text="Not a member? Signup now! ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0,sticky=N)
 
+# ----------------------------------------------------------------------------------------------- #
     # Frame for Register
     register_frame = LabelFrame(root,text=" Register ", labelanchor=N,width=200,height=700)
     register_frame.grid(row=2,column=0,padx=30,pady=30)
@@ -48,14 +67,14 @@ def home():
 
     # Username Label and Entry
     Label(register_frame,text="Username:     ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0)
-    Username = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
-    Username.grid(row=1,column=1,padx=5,pady=2)
+    RUsername = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
+    RUsername.grid(row=1,column=1,padx=5,pady=2)
 
     # Password Label and Entry
     Label(register_frame,text="Password:     ",font=('Consolas', 10),padx=10,pady=5).grid(row=2,column=0)
-    Password = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
-    Password.grid(row=2,column=1,padx=5,pady=2)
-    Password.config(show="•")
+    RPassword = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
+    RPassword.grid(row=2,column=1,padx=5,pady=2)
+    RPassword.config(show="•")
 
     # Confirm Password Label and Entry
     Label(register_frame,text="Confirm Password: ",font=('Consolas', 10),padx=10,pady=5).grid(row=3,column=0)
