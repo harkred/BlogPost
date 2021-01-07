@@ -1,7 +1,7 @@
 from tkinter import *
 import re
 from tkinter import messagebox
-from connections import write_register,result
+from connections import write_register,result,login_results
 import sqlite3
 
 # Function to check password
@@ -15,10 +15,11 @@ def check_password():
                 messagebox.showerror(title="Incorrect Password", message="The password entered is incorrect.")
                 break
             else:
-                # do stuffs
+                user_detail = login_results(Username.get())
+                print(user_detail)
                 Username.delete(0,END)
                 Password.delete(0,END)
-                break
+                return user_detail
     else:
         Username.delete(0,END)
         Password.delete(0,END)
@@ -33,10 +34,15 @@ def register():
         Email.delete(0,END)
         messagebox.showerror(title="Invalid Email",message="The Email Entered is invalid. Please try again.")
         return
-    if RPassword.get() != CPassword.get():
-        messagebox.showerror(title="Password Error",message="Make sure that confirm password and password are same.")
+    if len(RPassword.get()) < 8:
         RPassword.delete(0,END)
         CPassword.delete(0,END)
+        messagebox.showerror(title="Password Error",message="The password must contain minimum 8 characters.")
+        return
+    if RPassword.get() != CPassword.get():
+        RPassword.delete(0,END)
+        CPassword.delete(0,END)
+        messagebox.showerror(title="Password Error",message="Make sure that confirm password and password are same.")
         return
     write_register(RUsername,RPassword,CPassword,Email)
     
