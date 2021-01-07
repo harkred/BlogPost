@@ -22,12 +22,12 @@ def home():
 
     # Username Label and Entry
     Label(login_frame,text="Username: ",font=('Consolas', 10),padx=10,pady=5).grid(row=0,column=0)
-    Username = Entry(login_frame,width=40,font=('Consolas', 10))
+    Username = Entry(login_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Username.grid(row=0,column=1,padx=5,pady=2)
 
     # Password Label and Entry
     Label(login_frame,text="Password: ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0)
-    Password = Entry(login_frame,width=40,font=('Consolas', 10))
+    Password = Entry(login_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Password.grid(row=1,column=1,padx=5,pady=2)
     Password.config(show="•")
 
@@ -43,23 +43,23 @@ def home():
 
     # Email Label and Entry
     Label(register_frame,text="Email:        ",font=('Consolas', 10),padx=10,pady=5).grid(row=0,column=0)
-    Email = Entry(register_frame,width=40,font=('Consolas', 10))
+    Email = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Email.grid(row=0,column=1,padx=5,pady=2)
 
     # Username Label and Entry
     Label(register_frame,text="Username:     ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0)
-    Username = Entry(register_frame,width=40,font=('Consolas', 10))
+    Username = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Username.grid(row=1,column=1,padx=5,pady=2)
 
     # Password Label and Entry
     Label(register_frame,text="Password:     ",font=('Consolas', 10),padx=10,pady=5).grid(row=2,column=0)
-    Password = Entry(register_frame,width=40,font=('Consolas', 10))
+    Password = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Password.grid(row=2,column=1,padx=5,pady=2)
     Password.config(show="•")
 
     # Confirm Password Label and Entry
     Label(register_frame,text="Confirm Password: ",font=('Consolas', 10),padx=10,pady=5).grid(row=3,column=0)
-    CPassword = Entry(register_frame,width=40,font=('Consolas', 10))
+    CPassword = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     CPassword.grid(row=3,column=1,padx=5,pady=2)
     CPassword.config(show="•")
 
