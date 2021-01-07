@@ -66,9 +66,9 @@ def logout():
 	home()
 
 def popdown():
-    for child in pop.winfo_children():
-        child.pack_forget()
-    
+    global pop, add_blog
+    pop.destroy()
+    add_blog.destroy()
     menu.config(command=popup)
     
 def popup():
