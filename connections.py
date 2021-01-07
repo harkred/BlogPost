@@ -71,7 +71,7 @@ def login_results(username):
 	db.commit()
 	db.close()
 
-	return result
+	return results[0]
 
 def write_register(username,password,cpassword,email):
 	try:
