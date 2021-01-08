@@ -18,6 +18,7 @@ def check_password():
                 user_detail = login_results(Username.get())
                 Username.delete(0,END)
                 Password.delete(0,END)
+                root.destroy()
                 from browse import brew
                 brew(user_detail[0], user_detail[1], user_detail[2], user_detail[3], root)
                 break
@@ -47,7 +48,7 @@ def register():
         return
     write_register(RUsername,RPassword,CPassword,Email)
     
-
+# ----------------------------------------------------------------------------------------------- #
 # Login window's function
 def home():
     global root, Username, Password, Email, RUsername, RPassword, CPassword
