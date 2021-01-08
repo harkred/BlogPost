@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 from connections import insert_blog, get_bloginfo, get_blog, get_ublog
 
 def content(event):
+    global browse
     for child in main_frame.winfo_children():
         child.pack_forget()
     
@@ -27,6 +28,7 @@ def content(event):
     bcon.config(state=DISABLED)
     
 def ucontent(event):
+    global browse
     for child in main_frame.winfo_children():
         child.pack_forget()
     
@@ -48,13 +50,14 @@ def ucontent(event):
     ubcon.config(state=DISABLED)
     
 def submit():
+    global browse
     insert_blog(ID, blog_name.get(), blog_cont.get(1.0, END))
     blog_name.delete(0, END)
     blog_cont.delete(1.0, END)
     brew(USER, PASSWD, EMAIL, ID, browse)
 
 def blog():
-	global blog_name, blog_cont
+	global blog_name, blog_cont, browse
 
 	popdown()
 
@@ -74,7 +77,7 @@ def blog():
 	blog_name.pack(anchor=N, pady=5)
 
 	Text_frame = Frame(main_frame)
-	Text_frame.pack(anchor=E)
+	Text_frame.pack(anchor=E,padx=5)
     
 	contscroll = Scrollbar(Text_frame)
 	contscroll.pack(side=RIGHT,fill=Y)
@@ -97,7 +100,7 @@ def ublog():
 	for child in main_frame.winfo_children():
 		child.pack_forget()
     
-	URBLOGS = Label(main_frame, text='YOUR BLOGS'.format(USER), font=('', 25))
+	URBLOGS = Label(main_frame, text=f'YOUR BLOGS'.format(USER), font=('Consolas', 25))
 	URBLOGS.pack(side='top')
     
 	ublog_scroll = Scrollbar(main_frame)  
@@ -121,21 +124,22 @@ def logout():
 	home()
 
 def popdown():
+    global pop
     pop.destroy()
     menu.config(command=popup)
     
 def popup():
-    global pop, add_blog
+    global pop, add_blog, browse
     pop = Frame(browse)
     pop.pack(fill=Y, side='left', anchor=W)
     
-    home = Button(pop, text='Home', command=lambda:brew(USER, PASSWD, EMAIL, ID, browse))
+    home = Button(pop, text='   Home   ', font=("Consolas",10), command=lambda:brew(USER, PASSWD, EMAIL, ID, browse))
     
-    add_blog = Button(pop, text='Add Blog', command=blog)
+    add_blog = Button(pop, text=' Add Blog ', font=("Consolas",10), command=blog)
     
-    your_blogs = Button(pop, text='Your Blogs', command=ublog)
+    your_blogs = Button(pop, text='Your Blogs', font=("Consolas",10), command=ublog)
 
-    log_out = Button(pop, text='Log out', command=logout)
+    log_out = Button(pop, text=' Log out  ', font=("Consolas",10), command=logout)
 
     home.pack(ipadx=15, ipady=15)
     add_blog.pack(ipadx=15, ipady=15)
@@ -145,19 +149,21 @@ def popup():
     menu.config(command=popdown)
     
 def brew(username, passwd, email, oid, dis_win=None):
-	global browse, add_blog, main_frame, sidebar_frame, menu, USER, PASSWD, EMAIL, ID, blog_lst, result
-    
-	try: dis_win.destroy()
-	except Exception as e: pass
+	global browse, add_blog, main_frame, sidebar_frame, menu, USER, PASSWD, EMAIL, ID, blog_lst, result,pop
     
 	USER = username
 	PASSWD = passwd
 	EMAIL = email
 	ID = oid
-    
-	browse = Tk()
-	browse.geometry("1100x700")
-	browse.title(str(ID)+' '+USER)
+
+	try: 
+		pop.destroy()
+		sidebar_frame.destroy()
+		main_frame.destroy()
+	except Exception: 
+		browse = Tk()
+		browse.geometry("1200x700")
+		browse.title(str(ID)+' '+USER)
 
 	#Frames
 	sidebar_frame = Frame(browse)
