@@ -37,15 +37,16 @@ def blog():
 	blog_name = Entry(main_frame, width=100)
 	blog_name.pack()
 	blog_name.place(x=250, y=125)
+
+	Text_frame = Frame(main_frame)
+	Text_frame.place(x=250, y=170)
     
-	contscroll = Scrollbar(main_frame)
-	contscroll.pack()
-	contscroll.place(x=900, y=170)
-    
-	blog_cont = Text(main_frame, yscrollcommand=contscroll.set)
+	contscroll = Scrollbar(Text_frame)
+	contscroll.pack(side=RIGHT,fill=Y)
+
+	blog_cont = Text(Text_frame, yscrollcommand=contscroll.set)
 	blog_cont.pack()
-	blog_cont.place(x=250, y=170)
-    
+	
 	contscroll.config(command=blog_cont.yview)
     
 	save_blog = Button(main_frame, text='Submit', command=submit)
@@ -54,15 +55,6 @@ def blog():
     
 	BLOG = Label(main_frame, text='Blog')
 	BLOG.pack(side='top')
-
-	BLOG_NAME = Label(main_frame, text='Blog name: ')
-	BLOG_NAME.pack(side='left', anchor=W, pady=5)
-
-	BLOG_DESC = Label(main_frame, text='Blog description: ')
-	BLOG_DESC.pack(side='left', anchor=W, pady=5)
-
-	BLOG_CONT = Label(main_frame, text='Blog content: ')
-	BLOG_CONT.pack(side='left', anchor=W, pady=5) 
 
 def logout():
 	browse.destroy()
