@@ -1,5 +1,5 @@
 from tkinter import *
 from home import home
-from browse import brew
+import sqlite3
 
-brew()
+home()

@@ -40,21 +40,53 @@ def create_table_blog():
 	db.commit()
 	db.close()    
 
+def get_bloginfo():
+    db = sqlite3.connect('data.db')
+    curse = db.cursor()
+    
+    curse.execute('SELECT Username, Blog_name FROM userdata, blog WHERE userdata.oid=blog.bid')
+    result = curse.fetchall()
+    
+    db.commit()
+    db.close()
+    
+    return result
 
+def get_ublog(ID):
+    db = sqlite3.connect('data.db')
+    curse = db.cursor()
+    
+    curse.execute('SELECT Blog_name FROM blog WHERE BID = :BID', {'BID':ID})
+    
+    result = curse.fetchall()
+    
+    db.commit()
+    db.close()
+    
+    return result
+    
+def get_blog(blog_name, username):
+    db = sqlite3.connect('data.db')
+    curse = db.cursor()
+    
+    curse.execute('SELECT Blog_content FROM userdata, blog WHERE Blog_name = :Blog_name AND userdata.Username = :Username', {'Blog_name':blog_name, 'Username':username})
+    
+    result = curse.fetchall()
+    
+    db.commit()
+    db.close()
+    
+    return result    
    
 def insert_blog(bid, blog_name, blog_content):
 	db = sqlite3.connect('data.db')
 	curse = db.cursor()
 
-	curse.execute("INSERT INTO blog VALUES(\
-                   :bid=bid, \
-                   :Blog_name=Blog_name, \
-                   :Blog_content=Blog_content) \
-                   ",
+	curse.execute("INSERT INTO blog VALUES(:bid, :Blog_name, :Blog_content)",
                    {
                    'bid':bid,
-                   'blog_name':blog_name,
-                   'blog_content':blog_content
+                   'Blog_name':blog_name,
+                   'Blog_content':blog_content
                    }
                   )
 

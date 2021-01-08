@@ -16,10 +16,11 @@ def check_password():
                 break
             else:
                 user_detail = login_results(Username.get())
-                print(user_detail)
                 Username.delete(0,END)
                 Password.delete(0,END)
-                return user_detail
+                from browse import brew
+                brew(user_detail[0], user_detail[1], user_detail[2], user_detail[3], root)
+                break
     else:
         Username.delete(0,END)
         Password.delete(0,END)
@@ -49,7 +50,7 @@ def register():
 
 # Login window's function
 def home():
-    global Username, Password, Email, RUsername, RPassword, CPassword
+    global root, Username, Password, Email, RUsername, RPassword, CPassword
 
     # Creating the window
     root = Tk()
