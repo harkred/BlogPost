@@ -162,12 +162,12 @@ def brew(username, passwd, email, oid, dis_win=None):
 	#Frames
 	sidebar_frame = Frame(browse)
 	sidebar_frame.pack(fill=Y, side='left', anchor=W)
-	'''
+	
 	openimg = Image.open('menu_icon.jpg')
 	putimg = ImageTk.PhotoImage(openimg)
-	'''
-	menu = Button(sidebar_frame, text=' ', command=popup, bg='#f7f7f7')
-	menu.pack(anchor=NW, ipadx=10, ipady=5, padx=5, pady=5)
+	
+	menu = Button(sidebar_frame, text=' ', image=putimg, command=popup, bg='#f7f7f7')
+	menu.pack(anchor=NW, padx=5, pady=5)
 
 	main_frame = Frame(browse)
 	main_frame.pack(fill=BOTH, side='right', anchor=E)
