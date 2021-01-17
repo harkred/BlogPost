@@ -20,7 +20,7 @@ def _main_frame():
 	#openimg = Image.open('menu_icon.jpg')
 	#putimg = ImageTk.PhotoImage(openimg)
 
-	menu = Button(sidebar_frame, text=' ', image=putimg, command=popup, bg='#f7f7f7')
+	menu = Button(sidebar_frame, text=' ', command=popup, bg='#f7f7f7')
 	menu.pack(anchor=NW, padx=5, pady=5)
 
 	main_frame = Frame(browse)
