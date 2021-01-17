@@ -3,6 +3,52 @@ from home import home
 from PIL import ImageTk, Image
 from connections import insert_blog, get_bloginfo, get_blog, get_ublog
 
+def _main_frame():
+	global browse, add_blog, main_frame, sidebar_frame, menu, USER, PASSWD, EMAIL, ID, blog_lst, result,pop
+    
+	try: 
+		main_frame.destroy()
+		sidebar_frame.destroy()
+        
+	except Exception: 
+		pass
+        
+    #Frames
+	sidebar_frame = Frame(browse)
+	sidebar_frame.pack(fill=Y, side='left', anchor=W)
+   
+	#openimg = Image.open('menu_icon.jpg')
+	#putimg = ImageTk.PhotoImage(openimg)
+
+	menu = Button(sidebar_frame, text=' ', image=putimg, command=popup, bg='#f7f7f7')
+	menu.pack(anchor=NW, padx=5, pady=5)
+
+	main_frame = Frame(browse)
+	main_frame.pack(fill=BOTH, side='right', anchor=E)
+        
+	WELCM = Label(main_frame, text='Welcome Back {}'.format(USER), font=('', 25))
+	WELCM.pack(side='top')
+        
+	blog_scroll = Scrollbar(main_frame)  
+       
+	blog_lst = Listbox(main_frame, height=35, width=160, yscrollcommand=blog_scroll.set)
+        
+	blog_scroll.pack(side='right', fill=Y)
+       
+	blog_lst.pack(pady=15)
+       
+	blog_scroll.config(command=blog_lst.yview)
+        
+	result = get_bloginfo()
+        
+	for data in result:
+		blog_lst.insert(END, '${}^'.format(data[1])+'                           @{}'.format(data[0]))
+        
+	blog_lst.bind('<Double 1>', content)
+
+def back_to_browse():
+    _main_frame()        
+
 def content(event):
     global browse
     for child in main_frame.winfo_children():
@@ -12,7 +58,7 @@ def content(event):
     bname = a[(a.index('$')+1):a.index('^')]
     uname = a[(a.index('@')+1):]
 
-    back_btn = Button(main_frame, text='Back', command=lambda:brew(USER, PASSWD, EMAIL, ID, browse))
+    back_btn = Button(main_frame, text='Back', command=back_to_browse)
     back_btn.pack(side='left', padx=20, anchor=N, ipadx=15, ipady=15)
     
     bscroll = Scrollbar(main_frame)
@@ -26,15 +72,18 @@ def content(event):
     bcon.insert(1.0, blog)
     
     bcon.config(state=DISABLED)
+
+def back_to_ublog():
+    ublog()
     
 def ucontent(event):
-    global browse
+    global browse, uback_btn
     for child in main_frame.winfo_children():
         child.pack_forget()
     
     ubname = ublog_lst.get(ANCHOR)
 
-    uback_btn = Button(main_frame, text='Back', command=lambda:brew(USER, PASSWD, EMAIL, ID, browse))
+    uback_btn = Button(main_frame, text='Back', command=back_to_ublog)
     uback_btn.pack(side='left', padx=20, anchor=N, ipadx=15, ipady=15)
     
     ubscroll = Scrollbar(main_frame)
@@ -90,7 +139,7 @@ def blog():
 	save_blog = Button(main_frame, text='Submit', command=submit)
 	save_blog.pack()
     
-	discar_blog = Button(main_frame, text='Discard', command=lambda:brew(USER, PASSWD, EMAIL, ID, browse))
+	discar_blog = Button(main_frame, text='Discard', command=back_to_browse)
 	discar_blog.pack()
     
 def ublog():
@@ -100,7 +149,7 @@ def ublog():
 	for child in main_frame.winfo_children():
 		child.pack_forget()
     
-	URBLOGS = Label(main_frame, text=f'YOUR BLOGS'.format(USER), font=('Consolas', 25))
+	URBLOGS = Label(main_frame, text='YOUR BLOGS {}'.format(USER), font=('Consolas', 25))
 	URBLOGS.pack(side='top')
     
 	ublog_scroll = Scrollbar(main_frame)  
@@ -133,7 +182,7 @@ def popup():
     pop = Frame(browse)
     pop.pack(fill=Y, side='left', anchor=W)
     
-    home = Button(pop, text='   Home   ', font=("Consolas",10), command=lambda:brew(USER, PASSWD, EMAIL, ID, browse))
+    home = Button(pop, text='   Home   ', font=("Consolas",10), command=back_to_browse)
     
     add_blog = Button(pop, text=' Add Blog ', font=("Consolas",10), command=blog)
     
@@ -148,54 +197,18 @@ def popup():
     
     menu.config(command=popdown)
     
-def brew(username, passwd, email, oid, dis_win=None):
+def brew(username, passwd, email, oid):
 	global browse, add_blog, main_frame, sidebar_frame, menu, USER, PASSWD, EMAIL, ID, blog_lst, result,pop
     
 	USER = username
 	PASSWD = passwd
 	EMAIL = email
 	ID = oid
+    
+	browse = Tk()
+	browse.geometry("1200x700")
+	browse.title(str(ID)+' '+USER)
 
-	try: 
-		pop.destroy()
-		sidebar_frame.destroy()
-		main_frame.destroy()
-	except Exception: 
-		browse = Tk()
-		browse.geometry("1200x700")
-		browse.title(str(ID)+' '+USER)
-
-	#Frames
-	sidebar_frame = Frame(browse)
-	sidebar_frame.pack(fill=Y, side='left', anchor=W)
-	
-	openimg = Image.open('menu_icon.jpg')
-	putimg = ImageTk.PhotoImage(openimg)
-	
-	menu = Button(sidebar_frame, text=' ', image=putimg, command=popup, bg='#f7f7f7')
-	menu.pack(anchor=NW, padx=5, pady=5)
-
-	main_frame = Frame(browse)
-	main_frame.pack(fill=BOTH, side='right', anchor=E)
-    
-	WELCM = Label(main_frame, text='Welcome Back {}'.format(USER), font=('', 25))
-	WELCM.pack(side='top')
-    
-	blog_scroll = Scrollbar(main_frame)  
-	
-	blog_lst = Listbox(main_frame, height=35, width=160, yscrollcommand=blog_scroll.set)
-    
-	blog_scroll.pack(side='right', fill=Y)
-	
-	blog_lst.pack(pady=15)
-  
-	blog_scroll.config(command=blog_lst.yview)
-	
-	result = get_bloginfo()
-    
-	for data in result:
-		blog_lst.insert(END, '${}^'.format(data[1])+'                           @{}'.format(data[0]))
-    
-	blog_lst.bind('<Double 1>', content)
+	_main_frame()
     
 	mainloop()

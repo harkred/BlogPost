@@ -20,7 +20,7 @@ def check_password():
                 Password.delete(0,END)
                 root.destroy()
                 from browse import brew
-                brew(user_detail[0], user_detail[1], user_detail[2], user_detail[3], root)
+                brew(user_detail[0], user_detail[1], user_detail[2], user_detail[3])
                 break
     else:
         Username.delete(0,END)
