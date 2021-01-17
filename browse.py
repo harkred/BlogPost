@@ -47,7 +47,11 @@ def _main_frame():
 	blog_lst.bind('<Double 1>', content)
 
 def back_to_browse():
-    _main_frame()        
+    _main_frame()
+
+def _back_to_browse():
+    _main_frame()
+    popdown()
 
 def content(event):
     global browse
@@ -182,7 +186,7 @@ def popup():
     pop = Frame(browse)
     pop.pack(fill=Y, side='left', anchor=W)
     
-    home = Button(pop, text='   Home   ', font=("Consolas",10), command=back_to_browse)
+    home = Button(pop, text='   Home   ', font=("Consolas",10), command=_back_to_browse)
     
     add_blog = Button(pop, text=' Add Blog ', font=("Consolas",10), command=blog)
     
