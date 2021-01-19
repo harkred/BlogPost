@@ -70,7 +70,7 @@ def content(event):
     bcon.pack(fill=BOTH, expand=1)
 
     blog = get_blog(bname, uname)
-    bcon.insert(1.0, blog)
+    bcon.insert(1.0, blog[0][0])
     
     bcon.config(state=DISABLED)
 
@@ -215,6 +215,7 @@ def brew(username, passwd, email, oid):
 	browse = Tk()
 	browse.geometry("1350x750")
 	browse.title(str(ID)+' '+USER)
+	browse.state("zoomed")
 
 	_main_frame()
     
