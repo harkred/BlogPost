@@ -1,169 +1,172 @@
 from tkinter import *
+from tkinter import scrolledtext
+from tkinter import messagebox
 from home import home
 from PIL import ImageTk, Image
 from connections import insert_blog, get_bloginfo, get_blog, get_ublog
 
 def _main_frame():
-	global browse, add_blog, main_frame, sidebar_frame, menu, USER, PASSWD, EMAIL, ID, blog_lst, result,pop
+	global main_frame, left_frame, right_frame, menu, menu_text, blog_lst, result
     
 	try: 
 		main_frame.destroy()
-		sidebar_frame.destroy()
         
 	except Exception: 
 		pass
         
     #Frames
-	sidebar_frame = Frame(browse)
-	sidebar_frame.pack(fill=Y, side='left', anchor=W)
-   
-	#openimg = Image.open('menu_icon.jpg')
-	#putimg = ImageTk.PhotoImage(openimg)
+    
+	main_frame = LabelFrame(browse)
+	main_frame.pack(fill=BOTH, expand=1)
+    
+	left_frame = LabelFrame(main_frame)
+	left_frame.pack(fill=Y, expand=1, side=LEFT, anchor=W, ipadx=60)
 
-	menu = Button(sidebar_frame, text=' ', command=popup, bg='#f7f7f7')
+	menu_text = "_______\n_______\n_______"
+    
+	menu = Button(left_frame, text=menu_text, command=popup, bg='#f7f7f7', font=('Consolas', 10))
 	menu.pack(anchor=NW, padx=5, pady=5)
 
-	main_frame = Frame(browse)
-	main_frame.pack(fill=BOTH, side='right', anchor=E)
-        
-	WELCM = Label(main_frame, text='Welcome Back {}'.format(USER), font=('', 25))
-	WELCM.pack(side='top')
-        
-	blog_scroll = Scrollbar(main_frame)  
-       
-	blog_lst = Listbox(main_frame, height=35, width=160, yscrollcommand=blog_scroll.set)
-        
+	right_frame = LabelFrame(main_frame, text='Welcome Back {}'.format(USER), font=('', 25))
+	right_frame.pack(fill=BOTH, expand=1, side=RIGHT)
+
+	blog_scroll = Scrollbar(right_frame)  
+
+	blog_lst = Listbox(right_frame, width=400, yscrollcommand=blog_scroll.set, font=('Consolas', 15))
+
 	blog_scroll.pack(side='right', fill=Y)
-       
-	blog_lst.pack(pady=15)
-       
+
+	blog_lst.pack(fill=BOTH, expand=1)
+
 	blog_scroll.config(command=blog_lst.yview)
-        
+
 	result = get_bloginfo()
-        
+
 	for data in result:
 		blog_lst.insert(END, '${}^'.format(data[1])+'                           @{}'.format(data[0]))
-        
+
 	blog_lst.bind('<Double 1>', content)
 
 def back_to_browse():
-    _main_frame()
-
-def _back_to_browse():
-    _main_frame()
-    popdown()
+    try:
+        _main_frame()
+        popdown()
+    except Exception as e: pass
 
 def content(event):
-    global browse
-    for child in main_frame.winfo_children():
+    for child in right_frame.winfo_children():
         child.pack_forget()
     
     a = blog_lst.get(ANCHOR)
     bname = a[(a.index('$')+1):a.index('^')]
     uname = a[(a.index('@')+1):]
 
-    back_btn = Button(main_frame, text='Back', command=back_to_browse)
-    back_btn.pack(side='left', padx=20, anchor=N, ipadx=15, ipady=15)
+    menu.config(text='Back', command=back_to_browse, font=('Consolas', 15))
     
-    bscroll = Scrollbar(main_frame)
-    bscroll.pack(fill=Y, side='right')
+    try: popdown()
+    except Exception as e: pass
     
-    bcon = Text(main_frame, yscrollcommand=bscroll.set)
-    bcon.pack(fill=BOTH, expand=1, ipadx=100)
-    
-    bscroll.config(command=bcon.yview)
+    bcon = scrolledtext.ScrolledText(right_frame, width=300, font=('Consolas', 15))
+    bcon.pack(fill=BOTH, expand=1)
+
     blog = get_blog(bname, uname)
     bcon.insert(1.0, blog)
     
     bcon.config(state=DISABLED)
 
 def back_to_ublog():
+    ubcon.pack_forget()
+    menu.config(text=menu_text, command=popup, font=('Consolas', 10))
     ublog()
     
 def ucontent(event):
-    global browse, uback_btn
-    for child in main_frame.winfo_children():
+    global ubcon
+    
+    for child in right_frame.winfo_children():
         child.pack_forget()
     
     ubname = ublog_lst.get(ANCHOR)
-
-    uback_btn = Button(main_frame, text='Back', command=back_to_ublog)
-    uback_btn.pack(side='left', padx=20, anchor=N, ipadx=15, ipady=15)
     
-    ubscroll = Scrollbar(main_frame)
-    ubscroll.pack(fill=Y, side='right')
+    menu.config(text='Back', command=back_to_ublog, font=('Consolas', 15))
     
-    ubcon = Text(main_frame, yscrollcommand=ubscroll.set)
-    ubcon.pack(fill=BOTH, expand=1, ipadx=100)
+    right_frame.config(text=ublog_lst.get(ANCHOR))
     
-    ubscroll.config(command=ubcon.yview)
+    ubcon = scrolledtext.ScrolledText(right_frame, width=400, font=('Consolas', 15))
+    ubcon.pack(fill=BOTH, expand=1)
+    
     ublog = get_blog(ubname, USER)
     ubcon.insert(1.0, ublog)
     
     ubcon.config(state=DISABLED)
     
 def submit():
-    global browse
-    insert_blog(ID, blog_name.get(), blog_cont.get(1.0, END))
-    blog_name.delete(0, END)
-    blog_cont.delete(1.0, END)
-    brew(USER, PASSWD, EMAIL, ID, browse)
+    blgname = blog_name.get()
+    blgcont = blog_cont.get(1.0, END)
+    
+    if len(blgname) != 0 and len(blgcont) !=0:
+        insert_blog(ID, blgname, blgcont)
+        blog_name.delete(0, END)
+        blog_cont.delete(1.0, END)
+        messagebox.showinfo('', 'Blog added successfully')
+        brew(USER, PASSWD, EMAIL, ID)
+        
+    elif len(blgname) == 0 and len(blgcont) == 0: messagebox.showerror('', 'Please add the information properly')
 
 def blog():
-	global blog_name, blog_cont, browse
+	global blog_name, blog_cont
 
 	popdown()
 
-	for child in main_frame.winfo_children():
+	for child in right_frame.winfo_children():
 		child.pack_forget()
     
-	BLOG = Label(main_frame, text='Blog')
-	BLOG.pack(side='top', pady=25)
+	right_frame.config(text='Let your thoughts flourish')
     
-	BLOG_NAME = Label(main_frame, text='Blog name: ')
-	BLOG_NAME.pack(anchor=NW, side=LEFT)
+	blog_frame = LabelFrame(right_frame)
+	blog_frame.pack(fill=BOTH, expand=1)
     
-	BLOG_CONT = Label(main_frame, text='Blog content: ')
-	BLOG_CONT.pack(anchor=W, side=LEFT)
+	BLOG = Label(blog_frame, text='Blog', font=('Consolas', 20))
+	BLOG.grid(row=0, column=0, columnspan=2, pady=10)
+    
+	BLOG_NAME = Label(blog_frame, text='Blog name: ', font=('Consolas', 10))
+	BLOG_NAME.grid(row=1, column=0, pady=20)
+    
+	BLOG_CONT = Label(blog_frame, text='Blog content: ', font=('Consolas', 10))
+	BLOG_CONT.grid(row=2, column=0, sticky=N, pady=20)
 
-	blog_name = Entry(main_frame, width=75)
-	blog_name.pack(anchor=N, pady=5)
+	blog_name = Entry(blog_frame, width=150, font=('Consolas', 10))
+	blog_name.grid(row=1, column=1, sticky=W)
 
-	Text_frame = Frame(main_frame)
-	Text_frame.pack(anchor=E,padx=5)
-    
-	contscroll = Scrollbar(Text_frame)
-	contscroll.pack(side=RIGHT,fill=Y)
+	blog_cont = scrolledtext.ScrolledText(blog_frame, width=150, height=35, font=('Consolas', 10))
+	blog_cont.grid(row=2, column=1, sticky=W)
 
-	blog_cont = Text(Text_frame, yscrollcommand=contscroll.set)
-	blog_cont.pack(anchor=S, pady=5)
-	
-	contscroll.config(command=blog_cont.yview)
+	button_frame = LabelFrame(blog_frame)
+	button_frame.grid(row=3, column=0, columnspan=2)
+
+	save_blog = Button(button_frame, text='Submit', command=submit, font=('Consolas', 10))
+	save_blog.grid(row=0, column=0)
     
-	save_blog = Button(main_frame, text='Submit', command=submit)
-	save_blog.pack()
-    
-	discar_blog = Button(main_frame, text='Discard', command=back_to_browse)
-	discar_blog.pack()
+	discar_blog = Button(button_frame, text='Discard', command=back_to_browse, font=('Consolas', 10))
+	discar_blog.grid(row=0, column=1)
     
 def ublog():
 	global ublog_lst
 
 	popdown()
-	for child in main_frame.winfo_children():
+    
+	for child in right_frame.winfo_children():
 		child.pack_forget()
     
-	URBLOGS = Label(main_frame, text='YOUR BLOGS {}'.format(USER), font=('Consolas', 25))
-	URBLOGS.pack(side='top')
+	right_frame.config(text='YOUR BLOGS {}'.format(USER), font=('Consolas', 25))
     
-	ublog_scroll = Scrollbar(main_frame)  
+	ublog_scroll = Scrollbar(right_frame)  
 	
-	ublog_lst = Listbox(main_frame, height=35, width=160, yscrollcommand=ublog_scroll.set)
+	ublog_lst = Listbox(right_frame, width=400, yscrollcommand=ublog_scroll.set, font=('Consolas', 15))
 	ublog_lst.bind('<Double 1>', ucontent)
     
 	ublog_scroll.pack(side='right', fill=Y)
 	
-	ublog_lst.pack(pady=15)
+	ublog_lst.pack(fill=BOTH, expand=1)
   
 	ublog_scroll.config(command=blog_lst.yview)
     
@@ -177,16 +180,16 @@ def logout():
 	home()
 
 def popdown():
-    global pop
     pop.destroy()
     menu.config(command=popup)
     
 def popup():
-    global pop, add_blog, browse
-    pop = Frame(browse)
-    pop.pack(fill=Y, side='left', anchor=W)
+    global pop
     
-    home = Button(pop, text='   Home   ', font=("Consolas",10), command=_back_to_browse)
+    pop = LabelFrame(left_frame)
+    pop.pack(side='left', anchor=NW)
+    
+    home = Button(pop, text='   Home   ', font=("Consolas",10), command=back_to_browse)
     
     add_blog = Button(pop, text=' Add Blog ', font=("Consolas",10), command=blog)
     
@@ -194,15 +197,15 @@ def popup():
 
     log_out = Button(pop, text=' Log out  ', font=("Consolas",10), command=logout)
 
-    home.pack(ipadx=15, ipady=15)
-    add_blog.pack(ipadx=15, ipady=15)
-    your_blogs.pack(ipadx=15, ipady=15)
-    log_out.pack(ipadx=15, ipady=15)
+    home.pack(ipadx=15, ipady=15, anchor=NW)
+    add_blog.pack(ipadx=15, ipady=15, anchor=NW)
+    your_blogs.pack(ipadx=15, ipady=15, anchor=NW)
+    log_out.pack(ipadx=15, ipady=15, anchor=NW)
     
     menu.config(command=popdown)
     
 def brew(username, passwd, email, oid):
-	global browse, add_blog, main_frame, sidebar_frame, menu, USER, PASSWD, EMAIL, ID, blog_lst, result,pop
+	global browse, USER, PASSWD, EMAIL, ID
     
 	USER = username
 	PASSWD = passwd
@@ -210,7 +213,7 @@ def brew(username, passwd, email, oid):
 	ID = oid
     
 	browse = Tk()
-	browse.geometry("1200x700")
+	browse.geometry("1350x750")
 	browse.title(str(ID)+' '+USER)
 
 	_main_frame()
