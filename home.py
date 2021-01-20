@@ -5,7 +5,7 @@ from connections import write_register,result,login_results
 import sqlite3
 
 # Function to check password
-def check_password():
+def check_password(event):
     global Username,Password
     records = result()
     for user in records:
@@ -28,7 +28,7 @@ def check_password():
         messagebox.showerror(title="Account Not Found", message="Username not found. Please create an account.")
 
 # Function to register
-def register():
+def register(event):
     global Email, RUsername, RPassword, CPassword
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     # pass the regular expression and the string in search() method 
@@ -66,15 +66,19 @@ def home():
     Label(login_frame,text="Username: ",font=('Consolas', 10),padx=10,pady=5).grid(row=0,column=0)
     Username = Entry(login_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Username.grid(row=0,column=1,padx=5,pady=2)
+    Username.bind('<Return>', lambda e: Password.focus_set())
 
     # Password Label and Entry
     Label(login_frame,text="Password: ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0)
     Password = Entry(login_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Password.grid(row=1,column=1,padx=5,pady=2)
     Password.config(show="•")
+    Password.bind('<Return>', check_password)
 
     # Button to Login and run check_password function
-    Button(login_frame,text="Login",width=20,command=check_password,font=("Consolas",10)).grid(row=2,column=1,padx=5,pady=10)
+    Login_Button=Button(login_frame,text="Login",width=20,font=("Consolas",10))
+    Login_Button.grid(row=2,column=1,padx=5,pady=10)
+    Login_Button.bind('<Button-1>', check_password)
 
     Label(root,text="Not a member? Signup now! ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0,sticky=N)
 
@@ -88,25 +92,31 @@ def home():
     Label(register_frame,text="Email:        ",font=('Consolas', 10),padx=10,pady=5).grid(row=0,column=0)
     Email = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     Email.grid(row=0,column=1,padx=5,pady=2)
+    Email.bind('<Return>', lambda e: RUsername.focus_set())
 
     # Username Label and Entry
     Label(register_frame,text="Username:     ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0)
     RUsername = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     RUsername.grid(row=1,column=1,padx=5,pady=2)
+    RUsername.bind('<Return>', lambda e: RPassword.focus_set())
 
     # Password Label and Entry
     Label(register_frame,text="Password:     ",font=('Consolas', 10),padx=10,pady=5).grid(row=2,column=0)
     RPassword = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     RPassword.grid(row=2,column=1,padx=5,pady=2)
     RPassword.config(show="•")
+    RPassword.bind('<Return>', lambda e: CPassword.focus_set())
 
     # Confirm Password Label and Entry
     Label(register_frame,text="Confirm Password: ",font=('Consolas', 10),padx=10,pady=5).grid(row=3,column=0)
     CPassword = Entry(register_frame,width=40,font=('Consolas', 10), borderwidth=4)
     CPassword.grid(row=3,column=1,padx=5,pady=2)
     CPassword.config(show="•")
+    CPassword.bind('<Return>', check_password)
 
     # Button to Register and run register function
-    Button(register_frame,text="Register",width=20,command=register,font=("Consolas",10)).grid(row=4,column=1,padx=5,pady=10)
+    Register_Button=Button(register_frame,text="Register",width=20,command=register,font=("Consolas",10))
+    Register_Button.grid(row=4,column=1,padx=5,pady=10)
+    Register_Button.bind('<Button-1>', check_password)
 
     root.mainloop()
