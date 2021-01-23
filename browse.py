@@ -43,7 +43,7 @@ def _main_frame():
 	result = get_bloginfo()
 
 	for data in result:
-		blog_lst.insert(END, '${}^'.format(data[1])+'                           @{}'.format(data[0]))
+		blog_lst.insert(END, "{0:<65}@{1}".format(data[1],data[0]))
 
 	blog_lst.bind('<Double 1>', content)
 
@@ -58,7 +58,7 @@ def content(event):
         child.pack_forget()
     
     a = blog_lst.get(ANCHOR)
-    bname = a[(a.index('$')+1):a.index('^')]
+    bname = a[0:65].strip()
     uname = a[(a.index('@')+1):]
 
     menu.config(text='Back', command=back_to_browse, font=('Consolas', 15))
@@ -95,12 +95,16 @@ def ucontent(event):
     ubcon.pack(fill=BOTH, expand=1)
     
     ublog = get_blog(ubname, USER)
-    ubcon.insert(1.0, ublog)
+    ubcon.insert(1.0, ublog[0][0])
     
     ubcon.config(state=DISABLED)
     
 def submit():
     blgname = blog_name.get()
+    if len(blog_name.get())>60:
+        messagebox.showerror("","Blog Name cannot be longer than 60 characters.")
+        return
+
     blgcont = blog_cont.get(1.0, END)
     
     if len(blgname) != 0 and len(blgcont) !=0:
