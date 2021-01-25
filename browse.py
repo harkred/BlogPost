@@ -152,6 +152,7 @@ def submit():
     for char in blog_cont.get(1.0, END):
         if char.isdigit() or char.isalpha():
             valid = 1
+            break
             
     if blog_name.get() != '' and valid == 1:
             messagebox.showinfo('', 'Blog added successfully')
