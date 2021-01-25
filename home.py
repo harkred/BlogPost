@@ -47,11 +47,19 @@ def register(event):
         messagebox.showerror(title="Password Error",message="Make sure that confirm password and password are same.")
         return
     write_register(RUsername,RPassword,CPassword,Email)
+
+# Function to show/hide password
+def show():
+    global Password, Checked
+    if Checked.get():
+        Password.config(show="")
+    else:
+        Password.config(show="•")
     
 # ----------------------------------------------------------------------------------------------- #
 # Login window's function
 def home():
-    global root, Username, Password, Email, RUsername, RPassword, CPassword
+    global root, Username, Password, Email, RUsername, RPassword, CPassword, Checked
 
     # Creating the window
     root = Tk()
@@ -70,14 +78,18 @@ def home():
 
     # Password Label and Entry
     Label(login_frame,text="Password: ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0)
-    Password = Entry(login_frame,width=40,font=('Consolas', 10), borderwidth=4)
-    Password.grid(row=1,column=1,padx=5,pady=2)
-    Password.config(show="•")
+    Password = Entry(login_frame,width=40,font=('Consolas', 10), borderwidth=4, show="•")
+    Password.grid(row=1,column=1,padx=5,pady=2, sticky = W)
     Password.bind('<Return>', check_password)
+
+    # Show Password? Checkbox
+    Checked = IntVar()
+    Show_Password = Checkbutton(login_frame,text="Show Password",font=("Consolas",10),variable=Checked,command=show)
+    Show_Password.grid(row=2,column=1)
 
     # Button to Login and run check_password function
     Login_Button=Button(login_frame,text="Login",width=20,font=("Consolas",10))
-    Login_Button.grid(row=2,column=1,padx=5,pady=10)
+    Login_Button.grid(row=3,column=1,padx=5,pady=10)
     Login_Button.bind('<Button-1>', check_password)
 
     Label(root,text="Not a member? Signup now! ",font=('Consolas', 10),padx=10,pady=5).grid(row=1,column=0,sticky=N)
