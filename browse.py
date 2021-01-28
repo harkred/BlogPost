@@ -191,7 +191,7 @@ def blog():
 	blog_name = ttk.Entry(blog_frame, width=150)
 	blog_name.grid(row=1, column=1, sticky=W)
 
-	blog_cont = scrolledtext.ScrolledText(blog_frame, width=150, height=35, font=('Consolas', 10))
+	blog_cont = scrolledtext.ScrolledText(blog_frame, width=150, height=33, font=('Consolas', 10))
 	blog_cont.grid(row=2, column=1, sticky=W)
 
 	button_frame = ttk.LabelFrame(blog_frame)

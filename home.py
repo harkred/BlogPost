@@ -132,6 +132,6 @@ def home():
     # Button to Register and run register function
     Register_Button = ttk.Button(register_frame,text="Register",width=20,command=register)
     Register_Button.grid(row=4,column=1,padx=5,pady=10)
-    Register_Button.bind('<Button-1>', check_password)
+    Register_Button.bind('<Button-1>', register)
 
     root.mainloop()
