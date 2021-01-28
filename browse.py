@@ -164,6 +164,8 @@ def submit():
     else:
         if blog_name.get() == '': messagebox.showerror('', 'Please fill the blog name field')
         if valid == 0: messagebox.showerror('', 'Please fill the blog content field')
+    
+    result = get_bloginfo()
 
 #Frame which allows users to rite blogs
 def blog():
