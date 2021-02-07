@@ -123,3 +123,36 @@ def write_register(username,password,cpassword,email):
 		username.delete(0,END)
 		password.delete(0,END)
 		cpassword.delete(0,END)
+        
+def update(username, password, email, oid, frame):
+    
+    data = result()
+    
+    usern_data = [user[0] for user in data]
+    
+    if len(password) >= 8 and username != '' and password != '':
+        try:
+            db = sqlite3.connect('data.db')
+            curse = db.cursor()
+            
+            cmd = "UPDATE userdata SET \
+                   username = :username, \
+                   password = :password, \
+                   email = :email \
+                   WHERE oid = :oid"
+            
+            values = {'username':username, 'password':password, 'email':email, 'oid':oid}
+            
+            curse.execute(cmd, values)
+
+            db.commit()
+            db.close()
+            messagebox.showinfo('', 'Account updated')
+            
+            frame()
+
+        except Exception as e: messagebox.showerror('', 'Username already taken')
+    
+    if username == '' or email == '': messagebox.showerror('', 'Please fill the information')
+    
+    if len(password) < 8: messagebox.showerror('', 'Minimum length of password should be 8')

@@ -4,7 +4,7 @@ from tkinter import scrolledtext
 from tkinter import messagebox
 from home import home
 from PIL import ImageTk, Image
-from connections import insert_blog, get_bloginfo, get_blog, get_ublog
+from connections import insert_blog, get_bloginfo, get_blog, get_ublog, update
 
 #Main Frame window (Where everything starts after loggin in)_________________________
 def _main_frame():
@@ -64,14 +64,17 @@ def popup():
     pop.pack(side='left', anchor=NW)
     
     home = ttk.Button(pop, text='   Home   ', command=back_to_browse)
-    
+
+    edit_profile = ttk.Button(pop, text= 'Edit Profile', command=editprofile)
+
     add_blog = ttk.Button(pop, text=' Add Blog ', command=blog)
-    
+
     your_blogs = ttk.Button(pop, text='Your Blogs', command=ublog)
 
     log_out = ttk.Button(pop, text=' Log out  ', command=logout)
 
     home.pack(ipadx=15, ipady=15, anchor=NW)
+    edit_profile.pack(ipadx=15, ipady=15, anchor=NW)
     add_blog.pack(ipadx=15, ipady=15, anchor=NW)
     your_blogs.pack(ipadx=15, ipady=15, anchor=NW)
     log_out.pack(ipadx=15, ipady=15, anchor=NW)
@@ -166,6 +169,37 @@ def submit():
         if valid == 0: messagebox.showerror('', 'Please fill the blog content field')
     
     result = get_bloginfo()
+
+#Function to edit profile
+def editprofile():
+    popdown()
+    
+    for child in right_frame.winfo_children():
+        child.pack_forget()
+        
+    menu.config(text='Back', command=back_to_browse)
+    
+    right_frame.config(text='Edit Profile')
+    
+    edit_frame = ttk.LabelFrame(right_frame)
+    edit_frame.pack(side='left', anchor=N)
+    
+    labels = ['Username: ', 'Password: ', 'Email: ']
+    
+    for row, label in enumerate(labels):
+        ttk.Label(edit_frame, text=label).grid(row=row, column=0)
+    
+    user_entry = ttk.Entry(edit_frame, width=50)
+    user_entry.grid(row=0, column=1, columnspan=2)
+    
+    passwd_entry = ttk.Entry(edit_frame, width=50)
+    passwd_entry.grid(row=1, column=1, columnspan=2)
+    
+    email_entry = ttk.Entry(edit_frame, width=50)
+    email_entry.grid(row=2, column=1, columnspan=2)
+
+    update_btn = ttk.Button(edit_frame, text='Update', command=lambda:update(user_entry.get(), passwd_entry.get(), email_entry.get(), ID, _main_frame))
+    update_btn.grid(row=3, column=1)
 
 #Frame which allows users to rite blogs
 def blog():
