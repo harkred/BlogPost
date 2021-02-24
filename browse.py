@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import messagebox
+from ttkthemes import ThemedTk
 from home import home
 from PIL import ImageTk, Image
 from connections import insert_blog, get_bloginfo, get_blog, get_ublog, update
@@ -136,8 +137,10 @@ def ucontent(event):
     ubcon = scrolledtext.ScrolledText(right_frame, width=400, font=('Consolas', 15))
     ubcon.pack(fill=BOTH, expand=1)
     
-    ublog = get_blog(ubname, USER)
-    ubcon.insert(1.0, ublog[0][0])
+    try:
+        ublog = get_blog(ubname, USER)
+        ubcon.insert(1.0, ublog[0][0])
+    except Exception as e: pass
     
     ubcon.config(state=DISABLED)
 
@@ -280,10 +283,11 @@ def brew(username, passwd, email, oid):
 	EMAIL = email
 	ID = oid
     
-	browse = Tk()
+	browse = ThemedTk()
 	browse.geometry("1350x750")
 	browse.title(str(ID)+' '+USER)
 	browse.state("zoomed")
+	browse.set_theme('winxpblue')
 
 	_main_frame()
     

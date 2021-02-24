@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-
+from ttkthemes import ThemedTk
 import sqlite3
 import re
-
 from connections import write_register,result,login_results
 
 # Function to check password
@@ -65,9 +64,10 @@ def home():
     global root, Username, Password, Email, RUsername, RPassword, CPassword, Checked
 
     # Creating the window
-    root = Tk()
-    root.title(" Login")
+    root = ThemedTk()
+    root.title("Welcome to BlogPost")
     root.resizable(0,0)
+    root.set_theme('winxpblue')
 
     # Frame for Login
     login_frame = LabelFrame(root,text=" Login ", labelanchor=N,width=200,height=700)
